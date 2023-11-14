@@ -1,9 +1,10 @@
 #include "Stage.h"
-#include "Engine/Sprite.h"
+
+
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"), hPict_(-1)
+    :GameObject(parent, "Stage")
 {
 }
 
@@ -16,8 +17,10 @@ Stage::~Stage()
 void Stage::Initialize()
 {
     //モデルデータのロード
-    hPict_ = Sprite::Load("Assets/画像1.jpg");
-    assert(hPict_ >= 0);
+  /*  hPict_ = Sprite::Load("Assets/画像1.jpg");
+    assert(hPict_ >= 0);*/
+    pSprite = new Sprite;
+    pSprite->Initialize();
 }
 
 //更新
@@ -28,8 +31,9 @@ void Stage::Update()
 //描画
 void Stage::Draw()
 {
-    Model::SetTransform(hModel_, transform_);
-    Model::Draw(hModel_);
+    pSprite->Draw(transform_);
+   /* Model::SetTransform(hModel_, transform_);
+    Model::Draw(hModel_);*/
 }
 
 //開放

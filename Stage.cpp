@@ -1,9 +1,9 @@
 #include "Stage.h"
-#include "Engine/Model.h"
+#include "Engine/Sprite.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"), hModel_(-1)
+    :GameObject(parent, "Stage"), hPict_(-1)
 {
 }
 
@@ -16,8 +16,8 @@ Stage::~Stage()
 void Stage::Initialize()
 {
     //モデルデータのロード
-    hModel_ = Model::Load("assets/BoxDefault.fbx");
-    assert(hModel_ >= 0);
+    hPict_ = Sprite::Load("Assets/画像1.jpg");
+    assert(hPict_ >= 0);
 }
 
 //更新

@@ -1,4 +1,5 @@
 #include "GroundScene.h"
+#include "Arrow.h"
 #include "Engine/Model.h"
 
 //コンストラクタ
@@ -25,7 +26,7 @@ void GroundScene::Update()
 void GroundScene::Draw()
 {
 	Transform trsBall;
-	trsBall.position_ = XMFLOAT3(0, 1, 0);
+	trsBall.position_ = XMFLOAT3(3, 1, 3);
 	Model::SetTransform(hModel_[0], trsBall);
 	Model::Draw(hModel_[0]);
 

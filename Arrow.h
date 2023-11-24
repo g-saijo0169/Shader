@@ -4,7 +4,7 @@
 //■■シーンを管理するクラス
 class Arrow : public GameObject
 {
-	int hModel_[2];
+	int hModel_[3];
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

@@ -221,11 +221,13 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		//テクスチャ無し
 		else
 		{
+			XMFLOAT3 RED;
+			RED = {1.0, 0.0, 0.0};
 			pMaterialList_[i].pTexture = nullptr;
 			//マテリアルの色
 			FbxSurfaceLambert* pMaterial = (FbxSurfaceLambert*)pNode->GetMaterial(i);
 			FbxDouble3  diffuse = pMaterial->Diffuse;
-			pMaterialList_[i].diffuse = XMFLOAT4((float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 1.0f);
+			pMaterialList_[i].diffuse = XMFLOAT4((float)diffuse[1], (float)diffuse[1], (float)diffuse[2], 1.0f);
 		}
 	}
 }

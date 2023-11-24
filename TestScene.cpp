@@ -3,6 +3,7 @@
 #include "Engine/SceneManager.h"
 #include "Stage.h"
 #include "GroundScene.h"
+#include "Arrow.h"
 #include "Engine/Texture.h"
 
 TestScene::TestScene(GameObject* parent)
@@ -14,6 +15,7 @@ void TestScene::Initialize()
 {
 	//Instantiate<Stage>(this);
 	Instantiate<GroundScene>(this);
+	Instantiate<Arrow>(this);
 
 }
 

@@ -2,14 +2,13 @@
 #include "Engine/GameObject.h"
 
 //■■シーンを管理するクラス
-class GroundScene : public GameObject
+class Ball : public GameObject
 {
-	
 	int hModel_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	GroundScene(GameObject* parent);
+	Ball(GameObject* parent);
 
 	//初期化
 	void Initialize() override;

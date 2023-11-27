@@ -1,6 +1,7 @@
 #include "Arrow.h"
 #include "Engine/Model.h"
 
+const int ARROW = 3;
 
 //コンストラクタ
 Arrow::Arrow(GameObject* parent)
@@ -15,6 +16,7 @@ void Arrow::Initialize()
 	hModel_[1] = Model::Load("Assets/Arrow.fbx");
 	hModel_[2] = Model::Load("Assets/Arrow.fbx");
 
+	for(int i = 0; i<ARROW; i++)
 	assert(hModel_[0] >= 0);
 }
 

@@ -27,9 +27,11 @@ class Fbx
 	struct CONSTANT_BUFFER
 	{
 		XMMATRIX	matWVP;
-		XMMATRIX	matNormal;
+		XMMATRIX	matNormal;	//ƒ[ƒ‹ƒh•ÏŠ·‚¾‚¯‚Ì‚â‚Â
 		XMFLOAT4	diffuseColor;
-		int			isTextured;
+		XMFLOAT4	lighyDirection;
+		XMFLOAT4	eyePos;
+		BOOL		isTextured;
 	};
 
 	struct VERTEX

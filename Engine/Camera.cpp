@@ -48,9 +48,9 @@ void Camera::SetTarget(XMFLOAT3 target)
 	SetTarget(XMLoadFloat3(&target));
 }
 
-XMVECTOR GetEyePosition()
+XMVECTOR Camera::GetEyePosition()
 {
-	return 
+	return projMatrix_;
 }
 
 //ƒrƒ…[s—ñ‚ğæ“¾

@@ -30,7 +30,7 @@ class Fbx
 		XMMATRIX	matNormal;	//ƒ[ƒ‹ƒh•ÏŠ·‚¾‚¯‚Ì‚â‚Â
 		XMFLOAT4	diffuseColor;
 		XMFLOAT4	lighyDirection;
-		XMFLOAT4	eyePos;
+		XMMATRIX	eyePos;
 		BOOL		isTextured;
 	};
 

@@ -11,21 +11,21 @@ Ball::Ball(GameObject* parent)
 //èâä˙âª
 void Ball::Initialize()
 {
-	hModel_ = Model::Load("Assets/Ball.fbx");
+	hModel_ = Model::Load("Assets/Ball2.fbx");
 	assert(hModel_ >= 0);
 }
 
 //çXêV
 void Ball::Update()
 {
-	transform_.rotate_.y += 2.0f;
+	transform_.rotate_.y += 5.0f;
 }
 
 //ï`âÊ
 void Ball::Draw()
 {
 	Transform TrsBall;
-	TrsBall.position_ = XMFLOAT3(0, 1, 0);
+	TrsBall.position_ = XMFLOAT3(-2, 3, 2);
 	Model::SetTransform(hModel_, TrsBall);
 	Model::Draw(hModel_);
 }

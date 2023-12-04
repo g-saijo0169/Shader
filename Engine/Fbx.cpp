@@ -221,8 +221,8 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		//テクスチャ無し
 		else
 		{
-			XMFLOAT3 RED;
-			RED = {1.0, 0.0, 0.0};
+		/*	XMFLOAT3 RED;
+			RED = {1.0, 0.0, 0.0};*/
 			pMaterialList_[i].pTexture = nullptr;
 			//マテリアルの色
 			FbxSurfaceLambert* pMaterial = (FbxSurfaceLambert*)pNode->GetMaterial(i);
@@ -244,9 +244,11 @@ void Fbx::Draw(Transform& transform)
 		CONSTANT_BUFFER cb;
 		cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
+		cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
 		cb.diffuseColor = pMaterialList_[i].diffuse;
-		cb.lighyDirection = XMFLOAT4{ 1,1,1,1 };
-		cb.eyePos = Camera::GetEyePosition();
+		cb.lighyDirection = ;//XMFLOAT4{ 1,1,1,1 }
+		//cb.eyePos = Camera::GetEyePosition();
+		XMStoreFloat4(&cb.eyePos, Camera::GetEyePosition());
 		cb.isTextured = pMaterialList_[i].pTexture != nullptr;
 	
 		D3D11_MAPPED_SUBRESOURCE pdata;

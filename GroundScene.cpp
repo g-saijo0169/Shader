@@ -24,8 +24,8 @@ void GroundScene::Update()
 void GroundScene::Draw()
 {
 
-	//Model::SetTransform(hModel_, transform_);
-	//Model::Draw(hModel_);
+	Model::SetTransform(hModel_, transform_);
+	Model::Draw(hModel_);
 
 }
 

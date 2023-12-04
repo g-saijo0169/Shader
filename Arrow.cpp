@@ -28,18 +28,18 @@ void Arrow::Update()
 //•`‰æ
 void Arrow::Draw()
 {
-	//Transform tx,ty,tz;
-	//tx.rotate_ = XMFLOAT3(0, 0, 0);
-	//Model::SetTransform(hModel_[0],tx);
-	//Model::Draw(hModel_[0]);
+	Transform tx,ty,tz;
+	tx.rotate_ = XMFLOAT3(0, 0, 0);
+	Model::SetTransform(hModel_[0],tx);
+	Model::Draw(hModel_[0]);
 
-	//ty.rotate_ = XMFLOAT3(0, 0, 90);
-	//Model::SetTransform(hModel_[1], ty);
-	//Model::Draw(hModel_[1]);
+	ty.rotate_ = XMFLOAT3(0, 0, 90);
+	Model::SetTransform(hModel_[1], ty);
+	Model::Draw(hModel_[1]);
 
-	//tz.rotate_ = XMFLOAT3(0, -90, 0);
-	//Model::SetTransform(hModel_[2], tz);
-	//Model::Draw(hModel_[2]);
+	tz.rotate_ = XMFLOAT3(0, -90, 0);
+	Model::SetTransform(hModel_[2], tz);
+	Model::Draw(hModel_[2]);
 }
 
 //ŠJ•ú

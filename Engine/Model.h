@@ -15,6 +15,7 @@ namespace Model
 	};
 	int Load(std::string fileName);
 	void SetTransform(int hModel, Transform transform);
+	void SetLightPosition();
 	void Draw(int hModel);
 	void Release();
 }

@@ -11,7 +11,7 @@ GroundScene::GroundScene(GameObject* parent)
 //‰Šú‰»
 void GroundScene::Initialize()
 {
-	hModel_ = Model::Load("Assets/Ground.fbx");
+	hModel_ = Model::Load("Assets/torus.fbx");
 	assert(hModel_ >= 0);
 }
 

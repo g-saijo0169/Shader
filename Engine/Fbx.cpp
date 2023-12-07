@@ -187,6 +187,8 @@ void Fbx::IntConstantBuffer()
 
 void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 {
+
+	materialCount_ = pNode->GetMaterialCount();
 	pMaterialList_ = new MATERIAL[materialCount_];
 
 	for (int i = 0; i < materialCount_; i++)
@@ -246,9 +248,9 @@ void Fbx::Draw(Transform& transform)
 		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 		cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
 		cb.diffuseColor = pMaterialList_[i].diffuse;
-		cb.lighyDirection = ;//XMFLOAT4{ 1,1,1,1 }
-		//cb.eyePos = Camera::GetEyePosition();
-		XMStoreFloat4(&cb.eyePos, Camera::GetEyePosition());
+		cb.lighyDirection = XMFLOAT4{ 1,-1,1,0 };
+		//cb.eyePos = XMFLOAT4(Camera::GetEyePosition(), Camera::GetEyePosition(), Camera::GetEyePosition(), 0);
+		//XMStoreFloat4(&cb.eyePos, Camera::GetEyePosition());
 		cb.isTextured = pMaterialList_[i].pTexture != nullptr;
 	
 		D3D11_MAPPED_SUBRESOURCE pdata;

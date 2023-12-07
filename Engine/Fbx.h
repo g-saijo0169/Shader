@@ -22,6 +22,7 @@ class Fbx
 	{
 		Texture* pTexture;
 		XMFLOAT4 diffuse;
+		XMVECTOR uv;
 	};
 
 	struct CONSTANT_BUFFER
@@ -31,7 +32,7 @@ class Fbx
 		XMMATRIX	matNormal;		//スケールX平行移動の逆行列
 		XMFLOAT4	diffuseColor;	//FBXからとってきた面の色
 		XMFLOAT4	lighyDirection;
-		XMFLOAT4	eyePos;
+		XMFLOAT4	eyePos;			//カメラの位置（ハイライトの計算に必要）
 		BOOL		isTextured;
 	};
 

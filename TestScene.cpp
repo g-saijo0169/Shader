@@ -5,6 +5,7 @@
 #include "GroundScene.h"
 #include "Arrow.h"
 #include "Ball.h"
+#include "Controller.h"
 #include "Engine/Texture.h"
 
 TestScene::TestScene(GameObject* parent)
@@ -18,6 +19,7 @@ void TestScene::Initialize()
 	Instantiate<GroundScene>(this);
 	Instantiate<Arrow>(this);
 	Instantiate<Ball>(this);
+	Instantiate<Controller>(this);
 
 
 }

@@ -29,14 +29,17 @@ void Arrow::Update()
 void Arrow::Draw()
 {
 	Transform tx,ty,tz;
+	tx.position_ = XMFLOAT3(0, 0.5f, 0);
 	tx.rotate_ = XMFLOAT3(0, 0, 0);
 	Model::SetTransform(hModel_[0],tx);
 	Model::Draw(hModel_[0]);
 
+	ty.position_ = XMFLOAT3(0, 0.5f, 0);
 	ty.rotate_ = XMFLOAT3(0, 0, 90);
 	Model::SetTransform(hModel_[1], ty);
 	Model::Draw(hModel_[1]);
 
+	tz.position_ = XMFLOAT3(0, 0.5f, 0);
 	tz.rotate_ = XMFLOAT3(0, -90, 0);
 	Model::SetTransform(hModel_[2], tz);
 	Model::Draw(hModel_[2]);

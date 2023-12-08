@@ -4,7 +4,7 @@
 struct CBUFF_GROUND
 {
 	XMFLOAT4 lightPosition;
-	XMFLOAT4 eyePos;
+	XMFLOAT4 eyePosition;
 };
 
 //■■シーンを管理するクラス

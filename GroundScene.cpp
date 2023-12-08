@@ -12,6 +12,20 @@ GroundScene::GroundScene(GameObject* parent)
 
 void GroundScene::IntConstantBuffer()
 {
+	D3D11_BUFFER_DESC cb;
+	cb.ByteWidth = sizeof(CBUFF_GROUND);
+	cb.Usage = D3D11_USAGE_DEFAULT;
+	cb.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cb.CPUAccessFlags = 0;
+	cb.MiscFlags = 0;
+	cb.StructureByteStride = 0;
+
+	HRESULT hr;
+	hr = Direct3D::pDevice_->CreateBuffer(&cb, nullptr, &pCBStageScene_);
+	if (FAILED(hr))
+	{
+		MessageBox(NULL, "コンスタントバッファの作成に失敗しました", "エラー", MB_OK);
+	}
 }
 
 //初期化
@@ -20,6 +34,7 @@ void GroundScene::Initialize()
 	hModel_ = Model::Load("Assets/Torus.fbx");
 	assert(hModel_ >= 0);
 	
+	IntConstantBuffer();
 }
 
 //更新
@@ -37,10 +52,10 @@ void GroundScene::Update()
 
 	CBUFF_GROUND cb;
 	cb.lightPosition = lightSourcePosition_;
-	XMStoreFloat4(&cb.eyePos, Camera::GetEyePosition());
+	XMStoreFloat4(&cb.eyePosition, Camera::GetEyePosition());
 
 
-	Direct3D::pContext_->UpdateSubresource(pCBStageScene_, 0, NULL, &cb, 0, 0);
+	//Direct3D::pContext_->UpdateSubresource(pCBStageScene_, 0, NULL, &cb, 0, 0);
 
 	Direct3D::pContext_->VSSetConstantBuffers(1, 1, &pCBStageScene_);
 	Direct3D::pContext_->PSSetConstantBuffers(1, 1, &pCBStageScene_);

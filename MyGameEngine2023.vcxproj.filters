@@ -134,10 +134,18 @@
     <ClInclude Include="Stage.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GroundScene.h" />
-    <ClInclude Include="Arrow.h" />
-    <ClInclude Include="Ball.h" />
-    <ClInclude Include="Controller.h" />
+    <ClInclude Include="Arrow.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundScene.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

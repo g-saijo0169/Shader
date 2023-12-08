@@ -5,8 +5,11 @@
 //◆◆◆を管理するクラス
 class Stage : public GameObject
 {
-   // int hPict_;    //モデル番号
+    int hPict_;    //モデル番号
+    int hGround_;
+    int hLightBall_;
     Sprite* pSprite = nullptr;
+
 public:
     //コンストラクタ
     Stage(GameObject* parent);

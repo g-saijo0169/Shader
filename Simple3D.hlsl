@@ -14,10 +14,15 @@ cbuffer global:register(b0)
 	float4x4	matW;				//ワールド行列
 	float4x4	matNormal;			// ワールド行列
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
-	float4		lightPosition;
-	float4		eyePosition;
+
 	bool		isTextured;			//テクスチャーが貼られているかどうか
 };
+
+cbuffer global:register(b1)
+{
+	float4		lightPosition;
+	float4		eyePosition;
+}
 
 //───────────────────────────────────────
 // 頂点シェーダー出力＆ピクセルシェーダー入力データ構造体
@@ -72,7 +77,6 @@ float4 PS(VS_OUT inData) : SV_Target
 	float4 NL = saturate(dot(inData.normal, normalize(lightPosition)));
 
 	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));
-
 	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), 8);
 
 	if (isTextured == false)
@@ -88,5 +92,5 @@ float4 PS(VS_OUT inData) : SV_Target
 	//return g_texture.Sample(g_sampler, inData.uv);// (diffuse + ambient);]
 	//float4 diffuse = lightSource * inData.color;
 	//float4 ambient = lightSource * ambentSource;
-	return diffuse + ambient;
+	return diffuse + ambient + specular;
 }

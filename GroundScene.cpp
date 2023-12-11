@@ -6,7 +6,7 @@
 
 //コンストラクタ
 GroundScene::GroundScene(GameObject* parent)
-	: GameObject(parent, "GroundScene"), hModel_(-1), hGround_(-1),hLightBall_(-1),lightSourcePosition_(0),pCBStageScene_(0)
+	: GameObject(parent, "GroundScene"), hModel_(-1), hGround_(-1),hLightBall_(-1),lightSourcePosition_(NULL),pCBStageScene_(NULL)
 {
 }
 
@@ -31,7 +31,8 @@ void GroundScene::IntConstantBuffer()
 //初期化
 void GroundScene::Initialize()
 {
-	hModel_ = Model::Load("Assets/Torus.fbx");
+	hModel_ = Model::Load("Assets/Ground.fbx");
+	//hModel_ = Model::Load("Assets/Torus.fbx");
 	assert(hModel_ >= 0);
 	
 	IntConstantBuffer();
@@ -55,7 +56,7 @@ void GroundScene::Update()
 	XMStoreFloat4(&cb.eyePosition, Camera::GetEyePosition());
 
 
-	//Direct3D::pContext_->UpdateSubresource(pCBStageScene_, 0, NULL, &cb, 0, 0);
+	Direct3D::pContext_->UpdateSubresource(pCBStageScene_, 0, NULL, &cb, 0, 0);
 
 	Direct3D::pContext_->VSSetConstantBuffers(1, 1, &pCBStageScene_);
 	Direct3D::pContext_->PSSetConstantBuffers(1, 1, &pCBStageScene_);

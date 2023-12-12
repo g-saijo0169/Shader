@@ -35,8 +35,12 @@ void GroundScene::IntConstantBuffer()
 void GroundScene::Initialize()
 {
 	hModel_ = Model::Load("Assets/Ground.fbx");
-	//hModel_ = Model::Load("Assets/Torus.fbx");
+	hModel_ = Model::Load("Assets/Torus.fbx");
 	assert(hModel_ >= 0);
+
+	trDonuts.position_ = { 0,0,0 };
+	trDonuts.rotate_ = { 0,0,0 };
+	trDonuts.scale_ = { 1,1,1};
 	
 	IntConstantBuffer();
 }
@@ -71,6 +75,9 @@ void GroundScene::Draw()
 
 	Model::SetTransform(hModel_, transform_);
 	Model::Draw(hModel_);
+
+	Model::SetTransform(hLightBall_, trDonuts);
+	Model::Draw(hLightBall_);
 
 }
 

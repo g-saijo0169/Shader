@@ -4,9 +4,12 @@
 #include "Engine/Input.h"
 #include "Engine/Model.h"
 
+namespace {
+};
+
 //コンストラクタ
 GroundScene::GroundScene(GameObject* parent)
-	: GameObject(parent, "GroundScene"), hModel_(-1), hGround_(-1),hLightBall_(-1),lightSourcePosition_(NULL),pCBStageScene_(NULL)
+	: GameObject(parent, "GroundScene"), hModel_(-1), hGround_(-1),lightSourcePosition_(0,0,0,0)
 {
 }
 

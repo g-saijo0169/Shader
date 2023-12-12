@@ -24,7 +24,7 @@ class Fbx
 		XMFLOAT4 diffuse;
 	};
 
-	struct CONSTANT_BUFFER
+	struct CBUFF_MODEL
 	{
 		XMMATRIX	matWVP;			//ワールドビュープロジェクション
 		XMMATRIX	matW;			//ワールド変換のみ

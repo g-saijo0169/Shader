@@ -169,7 +169,7 @@ void Fbx::InitIndex(fbxsdk::FbxMesh* mesh)
 void Fbx::IntConstantBuffer()
 {
 	D3D11_BUFFER_DESC cb;
-	cb.ByteWidth = sizeof(CONSTANT_BUFFER);
+	cb.ByteWidth = sizeof(CBUFF_MODEL);
 	cb.Usage = D3D11_USAGE_DYNAMIC;
 	cb.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cb.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -194,7 +194,18 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 	for (int i = 0; i < materialCount_; i++)
 	{
 		//i番目のマテリアル情報を取得
-		FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
+		FbxSurfacePhong* pMaterial = (FbxSurfacePhong*)(pNode->GetMaterial(i));
+		FbxDouble3 diffuse = pMaterial -> Diffuse;
+		//diffuse[0],diffuse[1],diffuse[2]
+		FbxDouble3 ambient = pMaterial->Ambient;	//XMFLOAT4
+
+		if (pMaterial->GetClassId().Is(FbxSurfacePhong::ClassId)) {
+			FbxDouble3 specular = pMaterial->Specular;
+			FbxDouble shiness = pMaterial->Shininess;
+		}
+
+		pMaterialList_[i].diffuse = XMFLOAT4{ (float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 0 };
+		pMaterialList_[i].
 
 		//テクスチャ情報
 		FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
@@ -246,7 +257,7 @@ void Fbx::Draw(Transform& transform)
 	for (int i = 0; i < materialCount_; i++)
 	{
 		//コンスタントバッファに情報を渡す
-		CONSTANT_BUFFER cb;
+		CBUFF_MODEL cb;
 		cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 		cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());

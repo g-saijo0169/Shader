@@ -42,8 +42,8 @@ void GroundScene::Initialize()
 	trDonuts.rotate_ = { 0,0,0 };
 	trDonuts.scale_ = { 1,1,1};
 	
-	Camera::SetPosition(XMVECTOR({ 0,5,0,0 }));
-	Camera::SetTarget(XMVECTOR({ 0,2,0,0 }));
+	Camera::SetPosition(XMVECTOR({ 0,10,-20,0 }));
+	Camera::SetTarget(XMVECTOR({ 0,0,0,0 }));
 
 
 	IntConstantBuffer();
@@ -53,6 +53,46 @@ void GroundScene::Initialize()
 //XV
 void GroundScene::Update()
 {
+	if (Input::IsKey(DIK_RIGHT))
+	{
+		XMFLOAT4 p = GetLightPos();
+		XMFLOAT4 margin{ p.x + 0.1f, p.y + 0.0f, p.z + 0.0f, p.w + 0.0f };
+
+		//Model::GetModel(hModel_)->SetLightPos(margin);
+		SetLightPos(margin);
+	}
+	if (Input::IsKey(DIK_LEFT))
+	{
+		XMFLOAT4 p = GetLightPos();
+		XMFLOAT4 margin{ p.x - 0.1f, p.y - 0.0f, p.z - 0.0f, p.w - 0.0f };
+
+		/// Model::GetModel(hModel_)->SetLightPos(margin);
+		SetLightPos(margin);
+	}
+	if (Input::IsKey(DIK_UP))
+	{
+		XMFLOAT4 p = GetLightPos();
+		XMFLOAT4 margin{ p.x - 0.0f, p.y + 0.1f, p.z - 0.0f, p.w - 0.0f };
+
+		//Model::GetModel(hModel_)->SetLightPos(margin);
+		SetLightPos(margin);
+	}
+	if (Input::IsKey(DIK_DOWN))
+	{
+		XMFLOAT4 p = GetLightPos();
+		XMFLOAT4 margin{ p.x - 0.0f, p.y - 0.1f, p.z - 0.0f, p.w - 0.0f };
+
+		//Model::GetModel(hModel_)->SetLightPos(margin);
+		SetLightPos(margin);
+	}
+	if (Input::IsKey(DIK_W))
+	{
+		XMFLOAT4 p = GetLightPos();
+		XMFLOAT4 margin{ p.x - 0.0f, p.y - 0.0f, p.z + 0.1f, p.w + 0.0f };
+
+		//Model::GetModel(hModel_)->SetLightPos(margin);
+		SetLightPos(margin);
+	}
 	if (Input::IsKey(DIK_S))
 	{
 		XMFLOAT4 p = GetLightPos();

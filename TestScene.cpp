@@ -19,7 +19,7 @@ void TestScene::Initialize()
 	Instantiate<GroundScene>(this);
 	Instantiate<Arrow>(this);
 	Instantiate<Ball>(this);
-	Instantiate<Controller>(this);
+	//Instantiate<Controller>(this);
 
 
 }

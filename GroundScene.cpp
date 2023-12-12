@@ -4,8 +4,8 @@
 #include "Engine/Input.h"
 #include "Engine/Model.h"
 
-namespace {
-};
+//namespace {
+//};
 
 //コンストラクタ
 GroundScene::GroundScene(GameObject* parent)
@@ -34,15 +34,20 @@ void GroundScene::IntConstantBuffer()
 //初期化
 void GroundScene::Initialize()
 {
-	hModel_ = Model::Load("Assets/Ground.fbx");
-	hModel_ = Model::Load("Assets/Torus.fbx");
+	//hModel_ = Model::Load("Assets/Ground.fbx");
+	hModel_ = Model::Load("Assets/Donut.fbx");
 	assert(hModel_ >= 0);
 
 	trDonuts.position_ = { 0,0,0 };
 	trDonuts.rotate_ = { 0,0,0 };
 	trDonuts.scale_ = { 1,1,1};
 	
+	Camera::SetPosition(XMVECTOR({ 0,5,0,0 }));
+	Camera::SetTarget(XMVECTOR({ 0,2,0,0 }));
+
+
 	IntConstantBuffer();
+
 }
 
 //更新

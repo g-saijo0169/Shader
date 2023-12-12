@@ -204,8 +204,8 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 			FbxDouble shiness = pMaterial->Shininess;
 		}
 
-		/*pMaterialList_[i].diffuse = XMFLOAT4{ (float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 0 };
-		pMaterialList_[i].*/
+		pMaterialList_[i].diffuse = XMFLOAT4{ (float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 0 };
+		//pMaterialList_[i].
 
 		//テクスチャ情報
 		FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);

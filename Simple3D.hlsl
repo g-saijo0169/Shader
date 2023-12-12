@@ -53,7 +53,7 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 	outData.normal = normal;
 
 	float4 light = normalize(lightPosition);
-	light = normalize(light);
+	//light = normalize(light);
 	
 	outData.color = saturate(dot(normal, light));
 	float4 posw = mul(pos, matW);
@@ -69,13 +69,13 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 //───────────────────────────────────────
 float4 PS(VS_OUT inData) : SV_Target
 {
-	float4 lightSource = float4(1.0, 1.0, 1.0, 0.0);
-	float4 ambentSource = float4(0.2, 0.2, 0.2, 1.0);
+	float4 lightSource = float4(1.0, 1.0, 1.0, 0.0);	//ライトの色＆明るさ Iin
+	float4 ambentSource = float4(0.2, 0.2, 0.2, 1.0);	//アンビエント係数   Ka
 	float4 diffuse;
 	float4 ambient;
-	float4 NL = saturate(dot(inData.normal, normalize(lightPosition)));
+	float4 NL = dot(inData.normal, normalize(lightPosition));	//法線と入射光の内角
 
-	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));
+	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));	//反射ベクトル
 	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), 8);
 
 	if (isTextured == false)

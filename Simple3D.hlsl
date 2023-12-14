@@ -14,6 +14,10 @@ cbuffer gmodel:register(b0)
 	float4x4	matW;				//ワールド行列
 	float4x4	matNormal;			// ワールド行列
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
+	float4		ambientColor;		//環境光
+	float4		specularColor;		//鏡面反射＝ハイライト
+	float		shininess;
+
 	bool		isTextured;			//テクスチャーが貼られているかどうか
 };
 
@@ -70,23 +74,23 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 float4 PS(VS_OUT inData) : SV_Target
 {
 	float4 lightSource = float4(1.0, 1.0, 1.0, 0.0);	//ライトの色＆明るさ Iin
-	float4 ambentSource = float4(0.2, 0.2, 0.2, 1.0);	//アンビエント係数   Ka
+	//float4 ambentSource = float4(0.2, 0.2, 0.2, 1.0);	//アンビエント係数   Ka
 	float4 diffuse;
 	float4 ambient;
 	float4 NL = dot(inData.normal, normalize(lightPosition));	//法線と入射光の内角
 
 	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));	//反射ベクトル
-	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), 8);
+	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), shininess) * specularColor;
 
 	if (isTextured == false)
 	{
 		diffuse = lightSource * diffuseColor * inData.color;
-		ambient = lightSource * diffuseColor * ambentSource;
+		ambient = lightSource * diffuseColor * ambientColor;
 	}
 	else
 	{
 		diffuse = lightSource * g_texture.Sample(g_sampler, inData.uv) * inData.color;
-		ambient = lightSource * g_texture.Sample(g_sampler, inData.uv) * ambentSource;
+		ambient = lightSource * g_texture.Sample(g_sampler, inData.uv) * ambientColor;
 	}
 
 	//return g_texture.Sample(g_sampler, inData.uv);// (diffuse + ambient);]
@@ -94,4 +98,5 @@ float4 PS(VS_OUT inData) : SV_Target
 	//float4 ambient = lightSource * ambentSource;
 	
 	return diffuse + ambient + specular;
+	
 }

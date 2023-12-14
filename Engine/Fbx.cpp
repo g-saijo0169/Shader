@@ -194,18 +194,30 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 	for (int i = 0; i < materialCount_; i++)
 	{
 		//i番目のマテリアル情報を取得
-		FbxSurfacePhong* pMaterial = (FbxSurfacePhong*)(pNode->GetMaterial(i));
-		FbxDouble3 diffuse = pMaterial -> Diffuse;
-		//diffuse[0],diffuse[1],diffuse[2]
-		FbxDouble3 ambient = pMaterial->Ambient;	//XMFLOAT4
+		FbxSurfaceMaterial* pMaterial = pNode->GetMaterial(i);
 
+		//FbxSurfacePhong* pMaterial = (FbxSurfacePhong*)(pNode->GetMaterial(i));
+		FbxSurfacePhong* pPhong = (FbxSurfacePhong*)pMaterial;
+		FbxDouble3 diffuse = pPhong->Diffuse;
+		FbxDouble3 ambient = pPhong->Ambient;	//XMFLOAT4
+
+		pMaterialList_[i].diffuse = XMFLOAT4{ (float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 1.0f };
+		pMaterialList_[i].ambiemt = XMFLOAT4{ (float)ambient[0], (float)ambient[1], (float)ambient[2], 1.0f };
+		pMaterialList_[i].specular = XMFLOAT4(0, 0, 0, 0);	//とりあえずハイライト
+		pMaterialList_[i].shininess = 1;
+
+		//Mayaで指定したのがフォンシェーダーだったら
 		if (pMaterial->GetClassId().Is(FbxSurfacePhong::ClassId)) {
-			FbxDouble3 specular = pMaterial->Specular;
-			FbxDouble shiness = pMaterial->Shininess;
-		}
+			//Mayaで指定したSpecularColorの情報
+			FbxDouble3 specular = pPhong->Specular;
+			pMaterialList_[i].specular = XMFLOAT4{ (float)specular[0], (float)specular[1], (float)specular[2], 1.0f };
 
-		pMaterialList_[i].diffuse = XMFLOAT4{ (float)diffuse[0], (float)diffuse[1], (float)diffuse[2], 0 };
-		//pMaterialList_[i].
+			FbxDouble shininess = pPhong->Shininess;
+			pMaterialList_[i].shininess = (float)shininess;
+
+         }
+
+
 
 		//テクスチャ情報
 		FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
@@ -261,7 +273,13 @@ void Fbx::Draw(Transform& transform)
 		cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 		cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
-		cb.diffuseColor = pMaterialList_[i].diffuse;
+
+		cb.diffuseColor	 = pMaterialList_[i].diffuse;
+		cb.ambientColor  = pMaterialList_[i].ambiemt;
+		cb.specularColor = pMaterialList_[i].specular;
+		cb.shininess = pMaterialList_[i].shininess;
+
+
 		//cb.lightPosition = XMFLOAT4{ 1,-1,1,0 };
 		//cb.eyePos = XMFLOAT4(Camera::GetEyePosition(), Camera::GetEyePosition(), Camera::GetEyePosition(), 0);
 		//XMStoreFloat4(&cb.eyePos, Camera::GetEyePosition());

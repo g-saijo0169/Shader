@@ -42,7 +42,7 @@ void GroundScene::Initialize()
 	trDonuts.rotate_ = { 0,0,0 };
 	trDonuts.scale_ = { 1,1,1};
 	
-	Camera::SetPosition(XMVECTOR({ 0,10,-20,0 }));
+	Camera::SetPosition(XMVECTOR({ 5,10,-20,0 }));
 	Camera::SetTarget(XMVECTOR({ 0,0,0,0 }));
 
 

@@ -22,6 +22,9 @@ class Fbx
 	{
 		Texture* pTexture;
 		XMFLOAT4 diffuse;
+		XMFLOAT4 ambiemt;
+		XMFLOAT4 specular;
+		float	 shininess;
 	};
 
 	struct CBUFF_MODEL
@@ -29,7 +32,11 @@ class Fbx
 		XMMATRIX	matWVP;			//ワールドビュープロジェクション
 		XMMATRIX	matW;			//ワールド変換のみ
 		XMMATRIX	matNormal;		//スケールX平行移動の逆行列
-		XMFLOAT4	diffuseColor;	//FBXからとってきた面の色
+		XMFLOAT4	diffuseColor;	
+		XMFLOAT4	ambientColor;	
+		XMFLOAT4	specularColor;	
+		FLOAT		shininess;
+
 		BOOL		isTextured;
 	};
 

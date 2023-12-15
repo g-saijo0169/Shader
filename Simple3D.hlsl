@@ -49,7 +49,7 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 
 	//ローカル座標に、ワールド・ビュー・プロジェクション行列をかけて
 	//スクリーン座標に変換し、ピクセルシェーダーへ
-	outData.pos = mul(pos, matWVP);
+	outData.pos = mul(pos, matWVP);	//mul()
 	outData.uv = uv;
 	normal.w = 0;
 	normal = mul(normal, matNormal);

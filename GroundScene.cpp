@@ -36,6 +36,7 @@ void GroundScene::Initialize()
 {
 	//hModel_ = Model::Load("Assets/Ground.fbx");
 	hModel_ = Model::Load("Assets/Donut.fbx");
+
 	assert(hModel_ >= 0);
 
 	trDonuts.position_ = { 0,0,0 };
@@ -118,10 +119,10 @@ void GroundScene::Update()
 void GroundScene::Draw()
 {
 
-	Model::SetTransform(hModel_, transform_);
+	Model::SetTransform(hModel_, trDonuts);
 	Model::Draw(hModel_);
 
-	Model::SetTransform(hLightBall_, trDonuts);
+	Model::SetTransform(hLightBall_, transform_);
 	Model::Draw(hLightBall_);
 
 }

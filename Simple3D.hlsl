@@ -78,14 +78,29 @@ float4 PS(VS_OUT inData) : SV_Target
 	float4 diffuse;
 	float4 ambient;
 	float4 NL = dot(inData.normal, normalize(lightPosition));	//法線と入射光の内角
-
 	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));	//反射ベクトル
+	//float4 reflection = reflect(normalize(-lightPosition), inData.normal);
+
 	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), shininess) * specularColor;
 
-	if (isTextured == false)
+	float4 nk;
+	if (inData.color.x < 1 / 3.0)
 	{
-		diffuse = lightSource * diffuseColor * inData.color;
-		ambient = lightSource * diffuseColor * ambientColor;
+		nk = float4(0.0, 0.0, 0.0, 0.0);
+	}
+	else if (inData.color.x < 2 / 3.0)
+	{
+		nk = float4(0.0, 0.0, 0.0, 0.0);
+	}
+	else
+	{
+		nk = float4(1.0, 1.0, 1.0, 1.0);
+	}
+
+	if (isTextured == 0)
+	{
+			diffuse = lightSource * diffuseColor * inData.color;
+			ambient = lightSource * diffuseColor * ambientColor;
 	}
 	else
 	{
@@ -93,10 +108,13 @@ float4 PS(VS_OUT inData) : SV_Target
 		ambient = lightSource * g_texture.Sample(g_sampler, inData.uv) * ambientColor;
 	}
 
+
+
+	return nk;
 	//return g_texture.Sample(g_sampler, inData.uv);// (diffuse + ambient);]
 	//float4 diffuse = lightSource * inData.color;
 	//float4 ambient = lightSource * ambentSource;
 	
-	return diffuse + ambient + specular;
+	//return diffuse + ambient + specular;
 	
 }

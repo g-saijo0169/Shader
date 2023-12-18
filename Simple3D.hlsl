@@ -83,7 +83,9 @@ float4 PS(VS_OUT inData) : SV_Target
 
 	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), shininess) * specularColor;
 
-	float4 nk;
+
+
+	/*float4 nk;
 	if (inData.color.x < 1 / 3.0)
 	{
 		nk = float4(0.0, 0.0, 0.0, 0.0);
@@ -95,26 +97,26 @@ float4 PS(VS_OUT inData) : SV_Target
 	else
 	{
 		nk = float4(1.0, 1.0, 1.0, 1.0);
-	}
+	}*/
 
-	if (isTextured == 0)
+	if (isTextured == false)
 	{
 			diffuse = lightSource * diffuseColor * inData.color;
 			ambient = lightSource * diffuseColor * ambientColor;
 	}
 	else
 	{
-		diffuse = lightSource * g_texture.Sample(g_sampler, inData.uv) * inData.color;
-		ambient = lightSource * g_texture.Sample(g_sampler, inData.uv) * ambientColor;
+		   diffuse = lightSource * g_texture.Sample(g_sampler, inData.uv) * inData.color;
+		   ambient = lightSource * g_texture.Sample(g_sampler, inData.uv) * ambientColor;
 	}
 
 
 
-	return nk;
 	//return g_texture.Sample(g_sampler, inData.uv);// (diffuse + ambient);]
 	//float4 diffuse = lightSource * inData.color;
 	//float4 ambient = lightSource * ambentSource;
 	
-	//return diffuse + ambient + specular;
-	
+	return diffuse + ambient + specular;
+	//return nk;
+
 }

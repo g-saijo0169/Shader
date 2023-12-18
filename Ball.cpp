@@ -24,10 +24,10 @@ void Ball::Update()
 //•`‰æ
 void Ball::Draw()
 {
-	Transform TrsBall;
-	TrsBall.position_ = XMFLOAT3(-2, 3, 2);
-	Model::SetTransform(hModel_, TrsBall);
-	Model::Draw(hModel_);
+	//Transform TrsBall;
+	//TrsBall.position_ = XMFLOAT3(-2, 3, 2);
+	//Model::SetTransform(hModel_, TrsBall);
+	//Model::Draw(hModel_);
 }
 
 //ŠJ•ú

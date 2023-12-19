@@ -61,6 +61,8 @@ HRESULT Fbx::Load(std::string fileName)
 	pToonTex_ = new Texture;
 	pToonTex_->Load("Assets\\toon.png");
 
+	pToonSam_ = new Texture;
+	pToonSam_->Load("Assets\\Toon2.png");
 	return S_OK;
 }
 
@@ -326,7 +328,8 @@ void Fbx::Draw(Transform& transform)
 		ID3D11ShaderResourceView* pSRVToon = pToonTex_->GetSRV();
 		Direct3D::pContext_->PSSetShaderResources(1, 1, &pSRVToon);
 
-
+		ID3D11ShaderResourceView* pSRVToonSam = pToonSam_->GetSRV();
+		Direct3D::pContext_->PSSetShaderResources(1, 1, &pSRVToonSam);
 
 		//•`‰æ
 		Direct3D::pContext_->DrawIndexed(indexCount_[i], 0, 0);

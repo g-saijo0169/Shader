@@ -63,6 +63,8 @@ class Fbx
 	HRESULT InitMaterial(fbxsdk::FbxNode* pNode);
 	
 	Texture* pToonTex_;
+	Texture* pToonSam_;
+
 public:
 
 	Fbx();

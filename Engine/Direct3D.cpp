@@ -24,8 +24,6 @@ namespace Direct3D
 	SHADER_BUNDLE shaderBundle[SHADER_MAX];
 }
 
-
-
 //初期化
 HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 {
@@ -130,7 +128,6 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	pDevice_->CreateTexture2D(&descDepth, NULL, &pDepthStencil);
 	pDevice_->CreateDepthStencilView(pDepthStencil, NULL, &pDepthStencilView);
 
-
 	//データを画面に描画するための一通りの設定（パイプライン）
 	pContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // データの入力種類を指定
 	pContext_->OMSetRenderTargets(1, &pRenderTargetView_, nullptr);            // 描画先を設定
@@ -161,6 +158,10 @@ HRESULT Direct3D::InitShader()
 		return E_FAIL;
 	}
 
+	if (FAILED(InitToonShade()))
+	{
+		return E_FAIL;
+	}
 	return S_OK;
 
 
@@ -304,6 +305,7 @@ HRESULT Direct3D::InitShader2D()
 	return S_OK;
 }
 
+// InitShader3Dをコピペして、名前をInitToonShade()にへんこう
 HRESULT Direct3D::InitToonShade()
 {
 	using namespace Direct3D;
@@ -369,7 +371,7 @@ HRESULT Direct3D::InitToonShade()
 
 	//ラスタライザ作成
 	D3D11_RASTERIZER_DESC rdc = {};
-	rdc.CullMode = D3D11_CULL_FRONT;
+	rdc.CullMode = D3D11_CULL_BACK;
 	rdc.FillMode = D3D11_FILL_SOLID;
 	rdc.FrontCounterClockwise = FALSE; //Clockwise 時計回り  CounterClockwise 反時計回り
 	hr = pDevice_->CreateRasterizerState(&rdc, &(shaderBundle[SHADER_TOON].pRasterizerState_));
@@ -381,6 +383,11 @@ HRESULT Direct3D::InitToonShade()
 		//return E_FAIL;
 	}
 	return S_OK;
+}
+
+HRESULT Direct3D::InitShaderPointLight()
+{
+	return E_NOTIMPL;
 }
 
 
@@ -406,17 +413,12 @@ void Direct3D::BeginDraw()
 	pContext_->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
-
-
 //描画終了
-
 void Direct3D::EndDraw()
 {
 	//スワップ（バックバッファを表に表示する）
 	pSwapChain_->Present(0, 0);
 }
-
-
 
 //解放処理
 void Direct3D::Release()

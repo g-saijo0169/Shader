@@ -4,9 +4,6 @@
 Texture2D		g_texture : register(t0);	//テクスチャー
 SamplerState	g_sampler : register(s0);	//サンプラー
 
-Texture2D		g_toon_texture : register(t1);
-SamplerState    g_toon_sampler : register(s1);
-
 //───────────────────────────────────────
 // コンスタントバッファ
 // DirectX 側から送信されてくる、ポリゴン頂点以外の諸情報の定義
@@ -60,11 +57,11 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 	outData.normal = normal;
 
 	float4 light = normalize(lightPosition);
-	light = normalize(light);
-	
+	//light = normalize(light);
+
 	outData.color = saturate(dot(normal, light));
 	float4 posw = mul(pos, matW);
-	outData.eyev = eyePosition - posw; //視線
+	outData.eyev = eyePosition - posw;
 
 
 	//まとめて出力
@@ -86,39 +83,40 @@ float4 PS(VS_OUT inData) : SV_Target
 
 	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), shininess) * specularColor;
 
-	//float4 n1 = float4(1 / 4.0, 1 / 4.0, 1 / 4.0, 1);
-	//float4 n2 = float4(2 / 4.0, 2 / 4.0, 2 / 4.0, 1);
-	//float4 n3 = float4(3 / 4.0, 3 / 4.0, 3 / 4.0, 1);
-	//float4 n4 = float4(4 / 4.0, 4 / 4.0, 4 / 4.0, 1);
-
-	//float4 tI = 0.1 * step(n1, inData.color) + 0.3 * step(n2, inData.color) + 0.3 * step(n3, inData.color) + 0.4 * step(n4, inData.color);
-
-	float2 uv;
-	uv.x = inData.color.x;
-	uv.y = 0;
-
-	float4 tI = g_toon_texture.Sample(g_sampler, uv);
-
-	
 
 
-	if (isTextured == 0)
+	/*float4 nk;
+	if (inData.color.x < 1 / 3.0)
 	{
-			diffuse = lightSource * diffuseColor * tI;
+		nk = float4(0.0, 0.0, 0.0, 0.0);
+	}
+	else if (inData.color.x < 2 / 3.0)
+	{
+		nk = float4(0.0, 0.0, 0.0, 0.0);
+	}
+	else
+	{
+		nk = float4(1.0, 1.0, 1.0, 1.0);
+	}*/
+
+	if (isTextured == false)
+	{
+			diffuse = lightSource * diffuseColor * inData.color;
 			ambient = lightSource * diffuseColor * ambientColor;
 	}
 	else
 	{
-		   diffuse = lightSource * g_texture.Sample(g_sampler, inData.uv) * tI;
+		   diffuse = lightSource * g_texture.Sample(g_sampler, inData.uv) * inData.color;
 		   ambient = lightSource * g_texture.Sample(g_sampler, inData.uv) * ambientColor;
 	}
 
-	//return diffuse + ambient ;
-	// 輪郭 = 視線ベクトルと面の法線の角度が９０度付近
-	if (abs(dot(inData.normal , normalize(inData.eyev))) < 0.4)
-		return float4(0, 0, 0, 0);
-	else
-		return float4(1, 1, 1, 0);
 
-	//return g_toon_texture.Sample(g_sampler, uv);
+
+	//return g_texture.Sample(g_sampler, inData.uv);// (diffuse + ambient);]
+	//float4 diffuse = lightSource * inData.color;
+	//float4 ambient = lightSource * ambentSource;
+
+	return diffuse + ambient + specular;
+	//return nk;
+
 }

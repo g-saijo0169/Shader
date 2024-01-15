@@ -43,7 +43,7 @@ void GroundScene::Initialize()
 
 	trDonuts.position_ = { 0,0,0 };
 	trDonuts.rotate_ = { 0,0,0 };
-	trDonuts.scale_ = { 1,1,1};
+	trDonuts.scale_ = { 0.2,0.2,0.2};
 
 	trLightBall.position_ = { 0,0,0 };
 	trLightBall.rotate_ = { 0,0,0 };
@@ -130,8 +130,8 @@ void GroundScene::Draw()
 	Model::SetTransform(hModel_, trDonuts);
 	Model::Draw(hModel_);
 
-	Model::SetTransform(hLightBall_, trLightBall);
-	Model::Draw(hLightBall_);
+	/*Model::SetTransform(hLightBall_, trLightBall);
+	Model::Draw(hLightBall_);*/
 
 }
 

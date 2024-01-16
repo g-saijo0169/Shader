@@ -50,7 +50,7 @@ void GroundScene::Initialize()
 	trLightBall.scale_ = { 0.3,0.3,0.3 };
 
 	
-	Camera::SetPosition(XMVECTOR({ 5,10,-20,0 }));
+	Camera::SetPosition(XMVECTOR({ 0,3,-5,0 }));
 	Camera::SetTarget(XMVECTOR({ 0,0,0,0 }));
 
 

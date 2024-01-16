@@ -100,14 +100,24 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* mesh)
 
 	for (int i = 0; i < polygonCount_; i++)
 	{
+		mesh->GetElementTangentCount();//これが０なんだなぁ
 		int sIndex = mesh->GetPolygonVertexIndex(i);
 		FbxGeometryElementTangent* t = mesh->GetElementTangent(0);
-		FbxVector4 tangent = t->GetDirectArray().GetAt(sIndex).mData;
-		for (int j = 0; j < 3; j++)
-		{
-			int index = mesh->GetPolygonVertices()[sIndex + j];
-			vertices[index].tangent = { (float)tangent[0], (float)tangent[1], (float)tangent[2], (float)tangent[3] };
+		if (t) {
+			FbxVector4 tangent = t->GetDirectArray().GetAt(sIndex).mData;
+			for (int j = 0; j < 3; j++)
+			{
+				int index = mesh->GetPolygonVertices()[sIndex + j];
+				vertices[index].tangent = { (float)tangent[0], (float)tangent[1], (float)tangent[2], 0.0f };
 
+			}
+		}
+		else {
+			for (int j = 0; j < 3; j++)
+			{
+				int index = mesh->GetPolygonVertices()[sIndex + j];
+				vertices[index].tangent;
+			}
 		}
 
 
@@ -278,11 +288,10 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 			FbxDouble3  diffuse = pMaterial->Diffuse;
 			pMaterialList_[i].diffuse = XMFLOAT4((float)diffuse[1], (float)diffuse[1], (float)diffuse[2], 1.0f);
 		}
-	}
 
-	//ノーマルマップ用
-	{
-		//テクスチャ情報
+
+		//ノーマルマップ用
+			//テクスチャ情報
 		FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sNormalMap);
 
 		//テクスチャの数数

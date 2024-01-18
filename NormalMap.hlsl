@@ -4,6 +4,8 @@
 Texture2D		g_texture : register(t0);	//テクスチャー
 SamplerState	g_sampler : register(s0);	//サンプラー
 
+Texture2D		normalTex : register(t1);
+
 //───────────────────────────────────────
 // コンスタントバッファ
 // DirectX 側から送信されてくる、ポリゴン頂点以外の諸情報の定義
@@ -18,7 +20,8 @@ cbuffer gmodel:register(b0)
 	float4		specularColor;		//鏡面反射＝ハイライト
 	float		shininess;
 
-	bool		isTextured;			//テクスチャーが貼られているかどうか
+	int			hasTexture;
+	int		hasNormalMap;			//テクスチャーが貼られているかどうか
 };
 
 cbuffer gmodel:register(b1)
@@ -35,14 +38,17 @@ struct VS_OUT
 	float4 pos		: SV_POSITION;	//位置
 	float2 uv		: TEXCOORD;		//UV座標
 	float4 color	: COLOR;		//色（明るさ）
-	float4 eyev		: POSITION;
-	float4 normal	: NORMAL;
+	float4 eyev		: POSITION;		//ワールド座標に変換された視線ベクトル
+	float4 Neyev	: POSITION1;	//ノーマルマップ用の接空間に変換された視線ベクトル
+	float4 normal	: POSITION2;	//
+	float4 light	: POSITION3;	//
+	float4 color	: POSITION4;	//
 };
 
 //───────────────────────────────────────
 // 頂点シェーダ
 //───────────────────────────────────────
-VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
+VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, float4 tangent : TANGENT)
 {
 	//ピクセルシェーダーへ渡す情報
 	VS_OUT outData = (VS_OUT)0;
@@ -50,18 +56,45 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 	//ローカル座標に、ワールド・ビュー・プロジェクション行列をかけて
 	//スクリーン座標に変換し、ピクセルシェーダーへ
 	outData.pos = mul(pos, matWVP);	//mul()
-	outData.uv = uv;
+	outData.uv = (float)uv;
+
+	float3 binormal = cross(normal, tangent);
+
 	normal.w = 0;
 	normal = mul(normal, matNormal);
 	normal = normalize(normal);
 	outData.normal = normal;
 
-	float4 light = normalize(lightPosition);
-	//light = normalize(light);
+	tangent.w = 0;
+	tangent = mul(tangent, matNormal);
+	tangent = normalize(tangent);
 
-	outData.color = saturate(dot(normal, light));
-	float4 posw = mul(pos, matW);
+	binormal = mul(binormal, matNormal);
+	binormal = normalize(binormal)
+
+	float4 posw = mul(binormal, matNormal);
 	outData.eyev = eyePosition - posw;
+
+	outData.Neyev.x = dot(outData.eyev, tangent);
+	outData.Neyev.y = dot(outData.eyev, tangent);
+	outData.Neyev.z = dot(outData.eyev, tangent);
+	outData.Neyev.z = 0;
+
+
+	float4 light = normalize(lightPosition);
+	light = normalize(light);
+
+	//outData.color = saturate(dot(normal, light));
+	//float4 posw = mul(pos, matW);
+	//outData.eyev = eyePosition - posw;
+
+	outData.color = mul(light, normal);
+
+	outData.light.x = dot(light, tangent);
+	outData.light.y = dot(light, tangent);
+	outData.light.z = dot(light, tangent);
+	outData.light.w = 0;
+
 
 
 	//まとめて出力
@@ -99,7 +132,7 @@ float4 PS(VS_OUT inData) : SV_Target
 		nk = float4(1.0, 1.0, 1.0, 1.0);
 	}*/
 
-	if (isTextured == false)
+	if (hasTexture == false)
 	{
 			diffuse = lightSource * diffuseColor * inData.color;
 			ambient = lightSource * diffuseColor * ambientColor;

@@ -39,6 +39,7 @@ class Fbx
 		FLOAT		shininess;
 
 		BOOL		isTextured;
+		BOOL        isNormalMap;
 	};
 
 	struct VERTEX
@@ -46,7 +47,7 @@ class Fbx
 		XMVECTOR position;	//位置
 		XMVECTOR uv;		//テクスチャ座標
 		XMVECTOR normal;	//法線ベクトル
-		XMVECTOR tangent;	//接線
+		XMVECTOR tangent;	//接線ベクトル
 	};
 
 	int vertexCount_;	//頂点数

@@ -296,7 +296,7 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 			int fileTextureCount = lProperty.GetSrcObjectCount<FbxFileTexture>();
 
 			//テクスチャあり
-			if (fileTextureCount > 0)
+			if (fileTextureCount)
 			{
 				FbxFileTexture* textureInfo = lProperty.GetSrcObject<FbxFileTexture>(0);
 				const char* textureFilePath = textureInfo->GetRelativeFileName();
@@ -308,13 +308,13 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 				wsprintf(name, "%s%s", name, ext);
 
 				//ファイルからテクスチャ作成
-				pMaterialList_[i].pNormalTexture = new Texture;
-				HRESULT hr = pMaterialList_[i].pNormalTexture->Load(name);
+				pMaterialList_[i].pNormalmap = new Texture;
+				HRESULT hr = pMaterialList_[i].pNormalmap->Load(name);
 				assert(hr == S_OK);
 			}
 			else
 			{
-				pMaterialList_[i].pNormalTexture = nullptr;
+				pMaterialList_[i].pNormalmap = nullptr;
 			}
 		}
 	}
@@ -341,7 +341,7 @@ void Fbx::Draw(Transform& transform)
 		cb.specularColor = pMaterialList_[i].specular;
 		cb.shininess = pMaterialList_[i].shininess;
 
-		cb.isNormalMap = pMaterialList_[i].pNormalTexture != nullptr;
+		cb.isNormalMap = pMaterialList_[i].pNormalmap != nullptr;
 
 
 		//cb.lightPosition = XMFLOAT4{ 1,-1,1,0 };
@@ -383,9 +383,9 @@ void Fbx::Draw(Transform& transform)
 			Direct3D::pContext_->PSSetShaderResources(0, 1, &pSRV);
 		}
 
-		if (pMaterialList_[i].pNormalTexture)
+		if (pMaterialList_[i].pNormalmap)
 		{
-			ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pNormalTexture->GetSRV();
+			ID3D11ShaderResourceView* pSRV = pMaterialList_[i].pNormalmap->GetSRV();
 			Direct3D::pContext_->PSSetShaderResources(2, 1, &pSRV);
 		}
 

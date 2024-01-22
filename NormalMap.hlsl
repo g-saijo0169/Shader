@@ -20,7 +20,7 @@ cbuffer gmodel:register(b0)
 	float4		specularColor;		//鏡面反射＝ハイライト
 	float		shininess;
 
-	int			hasTexture;
+	int		hasTexture;
 	int		hasNormalMap;			//テクスチャーが貼られているかどうか
 };
 
@@ -37,7 +37,7 @@ struct VS_OUT
 {
 	float4 pos		: SV_POSITION;	//位置
 	float2 uv		: TEXCOORD;		//UV座標
-	float4 color	: COLOR;		//色（明るさ）
+	//float4 color	: COLOR;		//色（明るさ）
 	float4 eyev		: POSITION;		//ワールド座標に変換された視線ベクトル
 	float4 Neyev	: POSITION1;	//ノーマルマップ用の接空間に変換された視線ベクトル
 	float4 normal	: POSITION2;	//
@@ -55,47 +55,45 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, f
 
 	//ローカル座標に、ワールド・ビュー・プロジェクション行列をかけて
 	//スクリーン座標に変換し、ピクセルシェーダーへ
-	outData.pos = mul(pos, matWVP);	//mul()
-	outData.uv = (float)uv;
+	outData.pos = mul(pos, matWVP);
+	outData.uv = (float2)uv;
 
-	float3 binormal = cross(normal, tangent);
+	float3  binormal = cross(normal, tangent);
 
 	normal.w = 0;
 	normal = mul(normal, matNormal);
-	normal = normalize(normal);
+	normal = normalize(normal); //法線ベクトルをローカル座標に変換したやつ
+	normal.w = 0;
 	outData.normal = normal;
 
 	tangent.w = 0;
 	tangent = mul(tangent, matNormal);
-	tangent = normalize(tangent);
+	tangent = normalize(tangent); //接線ベクトルをローカル座標に変換したやつ
 
 	binormal = mul(binormal, matNormal);
-	binormal = normalize(binormal)
+	binormal = normalize(binormal); //従法線ベクトルをローカル座標に変換したやつ
 
-	float4 posw = mul(binormal, matNormal);
-	outData.eyev = eyePosition - posw;
+	float4 posw = mul(pos, matW);
+	outData.eyev = normalize(posw - eyePosition); //ワールド座標の視線ベクトル
 
-	outData.Neyev.x = dot(outData.eyev, tangent);
-	outData.Neyev.y = dot(outData.eyev, tangent);
-	outData.Neyev.z = dot(outData.eyev, tangent);
-	outData.Neyev.z = 0;
-
+	outData.Neyev.x = dot(outData.eyev, tangent);//接空間の視線ベクトル
+	outData.Neyev.y = dot(outData.eyev, binormal);
+	outData.Neyev.z = dot(outData.eyev, normal);
+	outData.Neyev.w = 0;
 
 	float4 light = normalize(lightPosition);
+	light.w = 0;
 	light = normalize(light);
 
-	//outData.color = saturate(dot(normal, light));
-	//float4 posw = mul(pos, matW);
-	//outData.eyev = eyePosition - posw;
+
 
 	outData.color = mul(light, normal);
+	outData.color.w = 0.0;
 
-	outData.light.x = dot(light, tangent);
-	outData.light.y = dot(light, tangent);
-	outData.light.z = dot(light, tangent);
+	outData.light.x = dot(light, tangent);//接空間の光源ベクトル
+	outData.light.y = dot(light, binormal);
+	outData.light.z = dot(light, normal);
 	outData.light.w = 0;
-
-
 
 	//まとめて出力
 	return outData;
@@ -106,50 +104,52 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, f
 //───────────────────────────────────────
 float4 PS(VS_OUT inData) : SV_Target
 {
-	float4 lightSource = float4(1.0, 1.0, 1.0, 0.0);	//ライトの色＆明るさ Iin
-	//float4 ambentSource = float4(0.2, 0.2, 0.2, 1.0);	//アンビエント係数   Ka
+	float4 lightSource = float4(1.0, 1.0, 1.0, 1.0);
 	float4 diffuse;
 	float4 ambient;
-	float4 NL = dot(inData.normal, normalize(lightPosition));	//法線と入射光の内角
-	float4 reflect = normalize(2 * NL * inData.normal - normalize(lightPosition));	//反射ベクトル
-	//float4 reflection = reflect(normalize(-lightPosition), inData.normal);
 
-	float4 specular = pow(saturate(dot(reflect, normalize(inData.eyev))), shininess) * specularColor;
-
-
-
-	/*float4 nk;
-	if (inData.color.x < 1 / 3.0)
+	if (hasNormalMap)
 	{
-		nk = float4(0.0, 0.0, 0.0, 0.0);
-	}
-	else if (inData.color.x < 2 / 3.0)
-	{
-		nk = float4(0.0, 0.0, 0.0, 0.0);
+		//inData.light = normalize(inData.light);
+		float4 tmpNormal = normalTex.Sample(g_sampler, inData.uv) * 2.0f - 1.0f;
+		tmpNormal.w = 0;
+		tmpNormal = normalize(tmpNormal);
+
+		float4 NL = clamp(dot(tmpNormal, inData.light), 0, 1);
+
+		float4 reflection = reflect(-inData.light, tmpNormal);
+		float4 specular = pow(saturate(dot(reflection, inData.Neyev)), shininess) * specularColor;
+
+		if (hasTexture != 0)
+		{
+			diffuse = g_texture.Sample(g_sampler, inData.uv) * NL;
+			ambient = g_texture.Sample(g_sampler, inData.uv) * ambientColor;
+		}
+		else
+		{
+			diffuse = diffuseColor * NL;
+			ambient = diffuseColor * ambientColor;
+		}
+		return   specular;
 	}
 	else
 	{
-		nk = float4(1.0, 1.0, 1.0, 1.0);
-	}*/
+		float4 reflection = reflect(normalize(lightPosition), inData.normal);
 
-	if (hasTexture == false)
-	{
+		float4 specular = pow(saturate(dot(normalize(reflection), inData.eyev)), shininess) * specularColor;
+		if (hasTexture == 0)
+		{
 			diffuse = lightSource * diffuseColor * inData.color;
 			ambient = lightSource * diffuseColor * ambientColor;
+		}
+		else
+		{
+			diffuse = lightSource * g_texture.Sample(g_sampler, inData.uv) * inData.color;
+			ambient = lightSource * g_texture.Sample(g_sampler, inData.uv) * ambientColor;
+		}
+		return specular;
+		//return nk;
+
 	}
-	else
-	{
-		   diffuse = lightSource * g_texture.Sample(g_sampler, inData.uv) * inData.color;
-		   ambient = lightSource * g_texture.Sample(g_sampler, inData.uv) * ambientColor;
-	}
-
-
-
-	//return g_texture.Sample(g_sampler, inData.uv);// (diffuse + ambient);]
-	//float4 diffuse = lightSource * inData.color;
-	//float4 ambient = lightSource * ambentSource;
-
-	return diffuse + ambient + specular;
-	//return nk;
 
 }

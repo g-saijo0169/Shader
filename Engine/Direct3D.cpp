@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include <cassert>
 #include <vector>
+#include "Camera.h"
 
 //変数
 namespace Direct3D
@@ -24,6 +25,9 @@ namespace Direct3D
 		ID3D11RasterizerState* pRasterizerState_ = nullptr;	//ラスタライザー
 	};
 	SHADER_BUNDLE shaderBundle[SHADER_MAX];
+
+	int srcW = 0;
+	int srcH = 0;
 }
 
 //初期化
@@ -153,7 +157,6 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 
 	//データを画面に描画するための一通りの設定（パイプライン）
 	pContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // データの入力種類を指定
-	pContext_->OMSetRenderTargets(1, &pRenderTargetView_, nullptr);            // 描画先を設定
 	pContext_->OMSetRenderTargets(1, &pRenderTargetView_, pDepthStencilView);            // 描画先を設定
 	pContext_->RSSetViewports(1, &vp);
 
@@ -163,6 +166,9 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	{
 		return hr;
 	}
+	Camera::Initialize();
+	srcW = winW;
+	srcH = winH;
 
 	return S_OK;
 }
@@ -464,7 +470,6 @@ HRESULT Direct3D::InitNormalMap()
 		{
 			//エラー処理
 			MessageBox(NULL, "ピクセルシェーダの作成に失敗しました", "エラー", MB_OK);
-			SAFE_RELEASE(pCompilePS);
 			return hr;
 		}
 
@@ -486,10 +491,10 @@ HRESULT Direct3D::InitNormalMap()
 		return S_OK;
 }
 
-HRESULT Direct3D::InitShaderPointLight()
-{
-	return E_NOTIMPL;
-}
+//HRESULT Direct3D::InitShaderPointLight()
+//{
+//	return E_NOTIMPL;
+//}
 
 
 void Direct3D::SetShader(SHADER_TYPE type)

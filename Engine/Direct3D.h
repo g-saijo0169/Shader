@@ -39,7 +39,7 @@ namespace Direct3D
 	HRESULT InitToonShade();
 	HRESULT InitNormalMap();
 	//HRESULT InitToonOutline();
-	HRESULT InitShaderPointLight();
+	//HRESULT InitShaderPointLight();
 
 	void SetShader(SHADER_TYPE type);
 

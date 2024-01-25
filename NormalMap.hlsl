@@ -37,12 +37,11 @@ struct VS_OUT
 {
 	float4 pos		: SV_POSITION;	//位置
 	float2 uv		: TEXCOORD;		//UV座標
-	//float4 color	: COLOR;		//色（明るさ）
 	float4 eyev		: POSITION;		//ワールド座標に変換された視線ベクトル
 	float4 Neyev	: POSITION1;	//ノーマルマップ用の接空間に変換された視線ベクトル
-	float4 normal	: POSITION2;	//
-	float4 light	: POSITION3;	//
-	float4 color	: POSITION4;	//
+	float4 normal	: NORMAL;	//
+	float4 light	: POSITION2;	//
+	float4 color	: COLOR;	//
 };
 
 //───────────────────────────────────────

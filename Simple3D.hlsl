@@ -73,6 +73,8 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 //───────────────────────────────────────
 float4 PS(VS_OUT inData) : SV_Target
 {
+	return float4(1,0,0,0);
+
 	float4 lightSource = float4(1.0, 1.0, 1.0, 0.0);	//ライトの色＆明るさ Iin
 	//float4 ambentSource = float4(0.2, 0.2, 0.2, 1.0);	//アンビエント係数   Ka
 	float4 diffuse;

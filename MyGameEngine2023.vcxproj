@@ -156,6 +156,7 @@
     <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="GroundScene.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="TestScene.cpp" />
   </ItemGroup>
@@ -220,6 +221,7 @@
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="GroundScene.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TestScene.h" />
   </ItemGroup>

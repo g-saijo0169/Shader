@@ -62,6 +62,7 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, f
 	normal.w = 0;
 	normal = mul(normal, matNormal);
 	normal = normalize(normal); //法線ベクトルをローカル座標に変換したやつ
+
 	normal.w = 0;
 	outData.normal = normal;
 
@@ -77,7 +78,7 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, f
 
 	outData.Neyev.x = dot(outData.eyev, tangent);//接空間の視線ベクトル
 	outData.Neyev.y = dot(outData.eyev, binormal);
-	outData.Neyev.z = dot(outData.eyev, normal);
+	outData.Neyev.z = dot(outData.eyev, outData.normal);
 	outData.Neyev.w = 0;
 
 	float4 light = normalize(lightPosition);
@@ -86,12 +87,12 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, f
 
 
 
-	outData.color = mul(light, normal);
+	outData.color = mul(light, outData.normal);
 	outData.color.w = 0.0;
 
 	outData.light.x = dot(light, tangent);//接空間の光源ベクトル
 	outData.light.y = dot(light, binormal);
-	outData.light.z = dot(light, normal);
+	outData.light.z = dot(light, outData.normal);
 	outData.light.w = 0;
 
 	//まとめて出力

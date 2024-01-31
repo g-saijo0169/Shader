@@ -18,7 +18,7 @@ cbuffer gmodel:register(b0)
 	float4		diffuseColor;		//マテリアルの色＝拡散反射係数
 	float4		ambientColor;		//環境光
 	float4		specularColor;		//鏡面反射＝ハイライト
-	float		shininess;
+	float		shiness;
 
 	int		hasTexture;
 	int		hasNormalMap;			//テクスチャーが貼られているかどうか
@@ -39,9 +39,9 @@ struct VS_OUT
 	float2 uv		: TEXCOORD;		//UV座標
 	float4 eyev		: POSITION;		//ワールド座標に変換された視線ベクトル
 	float4 Neyev	: POSITION1;	//ノーマルマップ用の接空間に変換された視線ベクトル
-	float4 normal	: NORMAL;	//
-	float4 light	: POSITION2;	//
-	float4 color	: COLOR;	//
+	float4 normal	: POSITION2;	//
+	float4 light	: POSITION3;	//
+	float4 color	: POSITION4;	//
 };
 
 //───────────────────────────────────────
@@ -63,8 +63,8 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, f
 	normal = mul(normal, matNormal);
 	normal = normalize(normal); //法線ベクトルをローカル座標に変換したやつ
 
-	normal.w = 0;
-	outData.normal = normal;
+	/*normal.w = 0;
+	outData.normal = normal;*/
 
 	tangent.w = 0;
 	tangent = mul(tangent, matNormal);
@@ -118,7 +118,7 @@ float4 PS(VS_OUT inData) : SV_Target
 		float4 NL = clamp(dot(tmpNormal, inData.light), 0, 1);
 
 		float4 reflection = reflect(-inData.light, tmpNormal);
-		float4 specular = pow(saturate(dot(reflection, inData.Neyev)), shininess) * specularColor;
+		float4 specular = pow(saturate(dot(reflection, inData.Neyev)), shiness) * specularColor;
 
 		if (hasTexture != 0)
 		{
@@ -130,13 +130,13 @@ float4 PS(VS_OUT inData) : SV_Target
 			diffuse = diffuseColor * NL;
 			ambient = diffuseColor * ambientColor;
 		}
-		return   specular;
+		return   diffuse + ambient + specular;
 	}
 	else
 	{
 		float4 reflection = reflect(normalize(lightPosition), inData.normal);
 
-		float4 specular = pow(saturate(dot(normalize(reflection), inData.eyev)), shininess) * specularColor;
+		float4 specular = pow(saturate(dot(normalize(reflection), inData.eyev)), shiness) * specularColor;
 		if (hasTexture == 0)
 		{
 			diffuse = lightSource * diffuseColor * inData.color;

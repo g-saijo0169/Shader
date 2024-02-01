@@ -35,7 +35,7 @@ void GroundScene::IntConstantBuffer()
 void GroundScene::Initialize()
 {
 	//hModel_ = Model::Load("Assets/Ground.fbx");
-	hModel_ = Model::Load("Assets/Donut.fbx");
+	hModel_ = Model::Load("Assets/WaterGround.fbx");
 	//hLightBall_ = Model::Load("Assets/Ground.fbx");
 
 	assert(hModel_ >= 0);
@@ -50,7 +50,7 @@ void GroundScene::Initialize()
 	trLightBall.scale_ = { 0.3,0.3,0.3 };
 
 	
-	Camera::SetPosition(XMVECTOR({ 0,3,-5,0 }));
+	Camera::SetPosition(XMVECTOR({ 0,1,-5,0 }));
 	Camera::SetTarget(XMVECTOR({ 0,0,0,0 }));
 
 

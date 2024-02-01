@@ -11,14 +11,14 @@ Ball::Ball(GameObject* parent)
 //‰Šú‰»
 void Ball::Initialize()
 {
-	hModel_ = Model::Load("Assets/Ball.fbx");
+	hModel_ = Model::Load("Assets/WaterGround.fbx");
 	assert(hModel_ >= 0);
 }
 
 //XV
 void Ball::Update()
 {
-	transform_.rotate_.y += 5.0f;
+	//transform_.rotate_.y += 5.0f;
 }
 
 //•`‰æ

@@ -36,10 +36,10 @@ void GroundScene::Initialize()
 {
 	//hModel_ = Model::Load("Assets/Ground.fbx");
 	//hModel_ = Model::Load("Assets/WaterGround.fbx");
-	//hLightBall_ = Model::Load("Assets/Ground.fbx");
+	hLightBall_ = Model::Load("Assets/Ball.fbx");
 
 	//assert(hModel_ >= 0);
-	//assert(hLightBall_ >= 0);
+	assert(hLightBall_ >= 0);
 
 	trDonuts.position_ = { 0,0,0 };
 	trDonuts.rotate_ = { 0,0,0 };
@@ -49,9 +49,6 @@ void GroundScene::Initialize()
 	trLightBall.rotate_ = { 0,0,0 };
 	trLightBall.scale_ = { 0.3,0.3,0.3 };
 
-	
-	Camera::SetPosition(XMVECTOR({ 0,5,-10,0 }));
-	Camera::SetTarget(XMVECTOR({ 0,0,0,0 }));
 
 
 	IntConstantBuffer();
@@ -127,8 +124,8 @@ void GroundScene::Update()
 void GroundScene::Draw()
 {
 
-	Model::SetTransform(hModel_, trDonuts);
-	Model::Draw(hModel_);
+	//Model::SetTransform(hModel_, trDonuts);
+	//Model::Draw(hModel_);
 
 	Model::SetTransform(hLightBall_, trLightBall);
 	Model::Draw(hLightBall_);

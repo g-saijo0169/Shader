@@ -13,12 +13,15 @@ void Ball::Initialize()
 {
 	hModel_ = Model::Load("Assets/Ball3.fbx");
 	assert(hModel_ >= 0);
+
+	transform_.position_.z = 10.0f;
 }
 
 //XV
 void Ball::Update()
 {
-	//transform_.rotate_.y += 5.0f;
+	transform_.rotate_.y += 5.0f;
+	
 }
 
 //•`‰æ

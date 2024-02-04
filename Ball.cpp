@@ -11,7 +11,7 @@ Ball::Ball(GameObject* parent)
 //‰Šú‰»
 void Ball::Initialize()
 {
-	hModel_ = Model::Load("Assets/WaterGround.fbx");
+	hModel_ = Model::Load("Assets/Ball3.fbx");
 	assert(hModel_ >= 0);
 }
 

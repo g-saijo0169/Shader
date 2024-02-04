@@ -1,46 +1,41 @@
 #pragma once
-
 #include <d3d11.h>
-#include <DirectXMath.h>
-
-#define SAFE_RELEASE(p) if(p != nullptr){ p->Release(); p = nullptr;}
-#define SAFE_DELETE(p) if(p != nullptr){ delete p; p = nullptr;}
-
+#include <assert.h> //これはC言語のヘッダファイル
+#include <vector>
 //リンカ
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
-using namespace DirectX;
+#define SAFE_DELETE(p) if(p != nullptr){ delete p; p = nullptr;} //開放処理
+#define SAFE_RELEASE(p) if(p != nullptr){ p->Release(); p = nullptr;} //開放処理
+#define SAFE_DELETE_ARRAY(p)if(p != nullptr){ delete[] p; p = nullptr;} //配列の解放処理
 
 enum SHADER_TYPE
 {
 	SHADER_2D,
 	SHADER_3D,
 	SHADER_TOON,
+	SHADER_TOONOUTLINE,
 	SHADER_NORMALMAP,
-	//SHADER_OUTLINE,
 	SHADER_MAX,
-
 };
-
 
 namespace Direct3D
 {
-	extern ID3D11Device* pDevice_;			//デバイス
-	extern ID3D11DeviceContext* pContext_;	//デバイスコンテキスト
+	extern ID3D11Device* pDevice_;
+	extern ID3D11DeviceContext* pContext_;		//デバイスコンテキスト
 
 	//初期化
+	//winW ウィンドウ幅 winH ウィンドウ高さ
 	HRESULT Initialize(int winW, int winH, HWND hWnd);
 
 	//シェーダー準備
 	HRESULT InitShader();
-	HRESULT InitShader3D();
 	HRESULT InitShader2D();
-	HRESULT InitToonShade();
+	HRESULT InitShader3D();
+	HRESULT InitToonShader();
+	HRESULT InitTonnOutLine();
 	HRESULT InitNormalMap();
-	//HRESULT InitToonOutline();
-	//HRESULT InitShaderPointLight();
-
 	void SetShader(SHADER_TYPE type);
 
 	//描画開始
@@ -51,4 +46,5 @@ namespace Direct3D
 
 	//解放
 	void Release();
+
 };

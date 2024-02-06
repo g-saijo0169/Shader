@@ -30,8 +30,8 @@ void WaterGround::Draw()
 	/*Transform TrsWaterGround;
 	TrsWaterGround.position_ = XMFLOAT3(-2, 3, 2);*/
 
-	//Model::SetTransform(hModel_, transform_);
-	//Model::Draw(hModel_);
+	Model::SetTransform(hModel_, transform_);
+	Model::Draw(hModel_);
 }
 
 //ŠJ•ú

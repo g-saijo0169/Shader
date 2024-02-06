@@ -55,7 +55,7 @@ public:
 	//‰ğ•ú
 	void Release();
 
-
+	float scrollVal;
 
 private:
 	//---------Initialize‚©‚çŒÄ‚Î‚ê‚éŠÖ”---------

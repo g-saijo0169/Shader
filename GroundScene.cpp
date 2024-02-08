@@ -9,7 +9,7 @@
 
 //コンストラクタ
 GroundScene::GroundScene(GameObject* parent)
-	: GameObject(parent, "GroundScene"), hModel_(-1), hGround_(-1),lightSourcePosition_(0,0,-10,0)
+	: GameObject(parent, "GroundScene"), hModel_(-1), hGround_(-1),lightSourcePosition_(0,0,-5,0)
 {
 }
 

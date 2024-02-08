@@ -12,11 +12,11 @@ WaterGround::WaterGround(GameObject* parent)
 //èâä˙âª
 void WaterGround::Initialize()
 {
-	hModel_ = Model::Load("Assets//WaterGround.fbx");
+	hModel_ = Model::Load("Assets/WaterGround.fbx");
 	assert(hModel_ >= 0);
 
-	Camera::SetPosition(XMVECTOR({ 0,1,-5,0 }));
-	Camera::SetTarget(XMVECTOR({ 0,0,0,0 }));
+	Camera::SetPosition(XMVECTOR({ 0,5,-10 }));
+	Camera::SetTarget(XMVECTOR({ 0,0,0 }));
 }
 
 //çXêV

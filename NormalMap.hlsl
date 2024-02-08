@@ -110,7 +110,7 @@ float4 PS(VS_OUT inData) : SV_Target
 
 	if (hasNormalMap)
 	{
-		//inData.light = normalize(inData.light);
+		inData.light = normalize(inData.light);
 		float4 tmpNormal = normalTex.Sample(g_sampler, inData.uv) * 2.0f - 1.0f;
 		tmpNormal.w = 0;
 		tmpNormal = normalize(tmpNormal);
@@ -150,6 +150,8 @@ float4 PS(VS_OUT inData) : SV_Target
 		float4 result = diffuse + ambient + specular;
 		if (hasTexture)
 			result.a = inData.uv.x;
+		//float4 result = diffuse + ambient + specular;
+		//result.a = (result.r + result.g + result.b) / 3;
 		return result;
 		//return nk;
 

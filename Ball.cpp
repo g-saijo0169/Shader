@@ -21,7 +21,7 @@ void Ball::Initialize()
 //çXêV
 void Ball::Update()
 {
-	//transform_.rotate_.y += 5.0f;
+	transform_.rotate_.y += 5.0f;
 	
 }
 
